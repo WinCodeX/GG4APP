@@ -15,6 +15,7 @@ export default function HomeScreen() {
         <TouchableOpacity>
           <Text style={{ fontSize: 24, color: '#bd93f9' }}>🛒</Text>
         </TouchableOpacity>
+        <FloatingMenu navigation={navigation} userRole="agent" />
       </View>
 
       <FlatList
