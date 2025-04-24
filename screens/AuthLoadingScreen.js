@@ -14,15 +14,15 @@ const AuthLoadingScreen = ({ navigation }) => {
       }
 
       try {
-        // Optionally validate token by pinging protected endpoint
-        const response = await api.get('/packages', {
-          headers: { Authorization: `Bearer ${token}` }
+        // Validate token by calling a protected route
+        await api.get('/packages', {
+          headers: { Authorization: `Bearer ${token}` },
         });
 
-        // Success: token is valid
-        navigation.replace('Home');
+        // ✅ Token is valid → Navigate to BottomTabNavigator (Main)
+        navigation.replace('Main');
       } catch (error) {
-        // Token is invalid/expired
+        // ❌ Token invalid/expired → clear it and send to Login
         await AsyncStorage.removeItem('auth_token');
         navigation.replace('Login');
       }
@@ -43,9 +43,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default AuthLoadingScreen;
- 

@@ -1,5 +1,6 @@
 import { View, Text, FlatList, Image, TouchableOpacity, SafeAreaView } from 'react-native';
-
+import FloatingMenu from '../components/FloatingMenu';
+import BottomTabNavigator from '../navigation/BottomTabNavigator';
 const data = [
   { id: '1', title: 'Clothing Store', time: '2h', image: require('../assets/cloth.jpg') },
   { id: '2', title: 'Kenya Cafe', desc: 'New shelf items available', rating: 4.5, image: require('../assets/cafe.jpg') },
@@ -15,8 +16,7 @@ export default function HomeScreen() {
         <TouchableOpacity>
           <Text style={{ fontSize: 24, color: '#bd93f9' }}>🛒</Text>
         </TouchableOpacity>
-        <FloatingMenu navigation={navigation} userRole="agent" />
-      </View>
+             </View>
 
       <FlatList
         data={data}

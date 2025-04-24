@@ -7,6 +7,8 @@ export default function SignupScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleSignup = async () => {
@@ -37,6 +39,14 @@ export default function SignupScreen({ navigation }) {
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
+        theme={{
+          colors: {
+            text: '#aaa',
+            placeholder: '#aaa',
+            background: '#111',
+            primary: '#a78bfa'
+          }
+        }}
       />
 
       <TextInput
@@ -44,7 +54,22 @@ export default function SignupScreen({ navigation }) {
         style={styles.input}
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
+        secureTextEntry={!showPassword}
+        right={
+          <TextInput.Icon
+            icon={showPassword ? 'eye-off' : 'eye'}
+            onPress={() => setShowPassword(prev => !prev)}
+            color="#aaa"
+          />
+        }
+        theme={{
+          colors: {
+            text: '#aaa',
+            placeholder: '#aaa',
+            background: '#111',
+            primary: '#a78bfa'
+          }
+        }}
       />
 
       <TextInput
@@ -52,7 +77,22 @@ export default function SignupScreen({ navigation }) {
         style={styles.input}
         value={confirmPassword}
         onChangeText={setConfirmPassword}
-        secureTextEntry
+        secureTextEntry={!showConfirm}
+        right={
+          <TextInput.Icon
+            icon={showConfirm ? 'eye-off' : 'eye'}
+            onPress={() => setShowConfirm(prev => !prev)}
+            color="#aaa"
+          />
+        }
+        theme={{
+          colors: {
+            text: '#aaa',
+            placeholder: '#aaa',
+            background: '#111',
+            primary: '#a78bfa'
+          }
+        }}
       />
 
       {errorMsg ? <Text style={styles.error}>{errorMsg}</Text> : null}
@@ -76,31 +116,31 @@ export default function SignupScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#000',
-      padding: 24,
-      justifyContent: 'center',
-    },
-    title: {
-      fontSize: 24,
-      color: '#fff',
-      marginBottom: 20,
-      textAlign: 'center',
-    },
-    input: {
-      backgroundColor: '#111',
-      marginBottom: 16,
-      color: '#fff',
-    },
-    button: {
-      backgroundColor: '#1d9bf0',
-      marginTop: 8,
-      padding: 8,
-    },
-    error: {
-      color: 'red',
-      textAlign: 'center',
-      marginBottom: 8,
-    },
-  });
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+    padding: 24,
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 24,
+    color: '#aaa',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  input: {
+    backgroundColor: '#111',
+    marginBottom: 16,
+    color: '#aaa',
+  },
+  button: {
+    backgroundColor: '#a78bfa', // Light purple
+    marginTop: 8,
+    padding: 8,
+  },
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+});

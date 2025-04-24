@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, Button, IconButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../lib/api';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleLogin = async () => {
@@ -14,13 +15,21 @@ export default function LoginScreen({ navigation }) {
       const response = await api.post('/login', {
         user: { email, password },
       });
-      const token = response.data.token;
 
-      await AsyncStorage.setItem('auth_token', token);
-      console.log('✅ Login successful:', token);
+      const token = response.data?.token;
+      if (token) {
+        await AsyncStorage.setItem('auth_token', token);
+        console.log('✅ Login successful:', token);
 
-      // Navigate to Home
-      navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+navigation.reset({
+  index: 0,
+  routes: [{ name: 'Main' }], // Ensure 'Main' matches the registered route name
+});
+      } else {
+        throw new Error('Token not found');
+      }
+
+// Removed erroneous and unnecessary lines
     } catch (error) {
       console.error('❌ Login error:', error);
       setErrorMsg('Invalid credentials');
@@ -39,6 +48,14 @@ export default function LoginScreen({ navigation }) {
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
+        theme={{
+          colors: {
+            text: '#fff',
+            placeholder: '#aaa',
+            background: '#111',
+            primary: '#a78bfa'
+          }
+        }}
       />
 
       <TextInput
@@ -47,9 +64,23 @@ export default function LoginScreen({ navigation }) {
         style={styles.input}
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
+        secureTextEntry={!showPassword}
+        right={
+          <TextInput.Icon
+            icon={showPassword ? 'eye-off' : 'eye'}
+            onPress={() => setShowPassword(prev => !prev)}
+            color="#aaa"
+          />
+        }
+        theme={{
+          colors: {
+            text: '#fff',
+            placeholder: '#aaa',
+            background: '#111',
+            primary: '#a78bfa'
+          }
+        }}
       />
-
       {errorMsg ? <Text style={styles.error}>{errorMsg}</Text> : null}
 
       <Button
@@ -62,7 +93,7 @@ export default function LoginScreen({ navigation }) {
 
       <Button
         onPress={() => navigation.navigate('Signup')}
-        textColor="#1d9bf0"
+        textColor="#a78bfa"
       >
         Don't have an account? Sign up
       </Button>
@@ -78,18 +109,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 24,
     color: '#fff',
+    fontSize: 24,
+    fontWeight: '600',
     marginBottom: 20,
     textAlign: 'center',
   },
   input: {
-    backgroundColor: '#111',
     marginBottom: 16,
-    color: '#fff',
+    backgroundColor: '#111',
   },
   button: {
-    backgroundColor: '#1d9bf0',
+    backgroundColor: '#a78bfa', // Light purple
     marginTop: 8,
     padding: 8,
   },
